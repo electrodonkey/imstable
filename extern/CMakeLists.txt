@@ -11,5 +11,3 @@ FetchContent_Declare(
   GIT_TAG        v1.8.2)
 
 FetchContent_MakeAvailable(Spdlog)
-
-target_link_libraries(imstable PRIVATE spdlog::spdlog)

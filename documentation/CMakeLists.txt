@@ -11,7 +11,7 @@ set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/doxygen")
 configure_file(${CMAKE_CURRENT_LIST_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
 add_custom_target(
-  GenerateDocs
+  GenerateDocs  ALL
   ${CMAKE_COMMAND} -E make_directory "${DOXYGEN_OUTPUT_DIRECTORY}"
   COMMAND doxygen Doxyfile
   COMMAND echo "Docs written to: ${DOXYGEN_OUTPUT_DIRECTORY}"
