@@ -1,11 +1,10 @@
 #include <fstream>
+#include "FileReader.h"
 
 std::ifstream infile("thefile.txt");
 
 namespace imstable{
 
-class FileReader
-{
 	FileReader::FileReader(char *fileName)
 	{
 
@@ -17,6 +16,5 @@ class FileReader
 
 
 
-};
 
 } // namespace imstable

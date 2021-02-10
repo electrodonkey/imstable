@@ -1,5 +1,6 @@
 #include <fstream>
 
+namespace imstable{
 class FileReader
 {
 public:
@@ -11,5 +12,5 @@ public:
 
 private:
 	std::string m_type;
-	struct timeval m_time;
-}
+};
+} // namespace imstable
