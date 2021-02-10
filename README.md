@@ -17,8 +17,8 @@ Reading in a PGM file
 
 The general strategy is:
 
-- open the file (use the class java.io.DataInputStream)
-- read in the first line of the header and check it contains 'P5'.
+- open the image file 
+- read in the first line of the header and check it contains 'P2'.
 - read in the second line containing the two integers specifying the size
 - check if its a comment line - while the line starts with #, read in the next line
 - extract the two integers that specify the size of the image from that line
@@ -49,3 +49,18 @@ for(int x = 0; x < width; x++) {
 		}
 	}
 }
+
+## Requirements 
+- Doxygen
+- CMake
+- GCC toolchain
+
+
+# How to build 
+
+```sh
+mkdir build
+cd build
+cmake .. -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug // or Release
+make
+```
