@@ -1,20 +1,22 @@
 #include <fstream>
+
 #include "FileReader.h"
 
-std::ifstream infile("thefile.txt");
+
 
 namespace imstable{
 
 	FileReader::FileReader(char *fileName)
 	{
-
+		std::ifstream infile(fileName);
 	}
 	FileReader::~FileReader(void)
 	{
 
 	}
-
-
-
+	int FileReader::FileOpen(void)
+	{
+		return 0;
+	}
 
 } // namespace imstable

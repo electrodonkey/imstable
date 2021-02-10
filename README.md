@@ -7,9 +7,26 @@ It can be solved with the image rotation matrix (https://en.wikipedia.org/wiki/R
 
 ## Open Topics
 
+- reading a PGM (Portable Gray Map)file
 - crop to largest rectangle
 - interpolation of pixels (bilinear, cubic)
 
+
+Reading in a PGM file
+---------------------
+
+The general strategy is:
+
+- open the file (use the class java.io.DataInputStream)
+- read in the first line of the header and check it contains 'P5'.
+- read in the second line containing the two integers specifying the size
+- check if its a comment line - while the line starts with #, read in the next line
+- extract the two integers that specify the size of the image from that line
+- read in the last line of the header and check it contains 255.
+
+- allocate a 2D array the size of the image
+- read in the pixel values one by one and put them into appropriate slot of 
+  the array.
 
 /* assuming width and height are integers with the image's dimensions */
 		int hwidth = width / 2;
