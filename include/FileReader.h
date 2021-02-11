@@ -9,7 +9,7 @@ public:
 	std::string getType();
 	struct timeval getTime();
 	virtual std::string getDescription()=0;
-    int FileOpen(void);
+    int FileOpen(std::string filePath);
 private:
 	std::string m_type;
 };

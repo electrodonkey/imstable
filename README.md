@@ -64,3 +64,7 @@ cd build
 cmake .. -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug // or Release
 make
 ```
+
+## Assumptions
+- All PGM files have only one comment on the 2nd line
+- We open only ASCII (P2) PGM files
