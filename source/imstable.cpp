@@ -1,6 +1,8 @@
 #include <fstream>
 #include <sstream>
 #include "spdlog/spdlog.h"
+#include "FilePGM.h"
+
 std::vector<std::vector<int>> rotate_CW_90(std::vector<std::vector<int>> input_image, int width, int height)
 {
     std::vector<std::vector<int>> output_image;
@@ -62,13 +64,14 @@ int main(int argc, char** argv) {
     //         }    
     //     }
         //spdlog::info("Test: " + std::to_string(matrix[5][5]));
+        imstable::FilePGM newImage(path);
         // rotation
         std::vector<std::vector<int>> output_image;
-        output_image.resize(numrows, std::vector<int>(numcols, 0));
-        output_image = rotate_CW_90(matrix,numcols,numrows);
-        for(row = 0; row < numrows; ++row)
+        output_image.resize(numrows, std::vector<int>(newImage.cols, 0));
+        output_image = rotate_CW_90(newImage.data,newImage.cols,newImage.rows);
+        for(row = 0; row < newImage.rows; ++row)
         {
-            for (col = 0; col < numcols; ++col)
+            for (col = 0; col < newImage.cols; ++col)
             {
                 outfile << output_image[row][col];
                 outfile << " ";
