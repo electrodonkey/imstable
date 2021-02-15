@@ -44,14 +44,14 @@ namespace imstable{
                 spdlog::info("Comment: " + line);
             }
             ss << myfile.rdbuf();
-            ss >> this->cols >> this->rows;
-            spdlog::info("Columns: " + std::to_string(this->cols) + " Rows: " + std::to_string(this->rows));
-            this->data.resize(this->rows, std::vector<int>(this->cols, 0));
+            ss >> this->width >> this->height;
+            spdlog::info("Columns: " + std::to_string(this->width) + " Rows: " + std::to_string(this->height));
+            this->data.resize(this->height, std::vector<int>(this->width, 0));
             ss >> MaxVal;
             spdlog::info("Maxval: " + std::to_string(MaxVal));
-            for(int row = 0; row < this->rows; ++row)
+            for(int row = 0; row < this->height; ++row)
             {
-                for (int col = 0; col < this->cols; ++col)
+                for (int col = 0; col < this->width; ++col)
                 {
                     ss >> this->data[row][col];
                 }    
