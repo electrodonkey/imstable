@@ -56,11 +56,74 @@ namespace imstable
 
         return output_image_data;
     }
+    /*
+        Bilinear Interpolation:
+        Bi-linear interpolation finds values between pixels in two directions
+
+        gray(P1) = (1−x)·gray(floor(x),floor(y)) +x·gray(ceiling(x),floor(y))
+        gray(P2) = (1−x)·gray(floor(x),ceiling(y))+x·gray(ceiling(x),ceiling(y))
+        gray(P3) = (1−y)·gray(P1) +y·gray(P2)
+
+        int bilinear_interpolate(the_image, x, y, rows, cols)
+        {
+            if(x < 0.0 || x >= (double)(cols-1) || y < 0.0 || y >= (double)(rows-1)) return(0);
+            mp_double = floor(x);
+            floor_x = tmp_double;
+            tmp_double = floor(y);
+            floor_y = tmp_double;
+            tmp_double = ceil(x);
+            ceil_x = tmp_double;
+            tmp_double = ceil(y);
+            ceil_y = tmp_double;
+            fraction_x = x - floor(x);
+            fraction_y = y - floor(y);
+            one_minus_x = 1.0 - fraction_x;
+            one_minus_y = 1.0 - fraction_y;
+            tmp_double = one_minus_x *(double)(the_image[floor_y][floor_x]) +fraction_x *(double)(the_image[floor_y][ceil_x]);
+            p1 = tmp_double;tmp_double = one_minus_x *(double)(the_image[ceil_y][floor_x]) +fraction_x *(double)(the_image[ceil_y][ceil_x]);
+            p2 = tmp_double;tmp_double = one_minus_y * (double)(p1) +fraction_y * (double)(p2);
+            p3 = tmp_double;
+            return(p3);
+        }
+    */
 
     /*
         x = width, y = heigth, m,n - coordinates of pivot point
         X=x·cos(θ)−y·sin(θ)−m·cos(theta) +n·sin(θ) +m
         Y=y·cos(θ) +x·sin(θ)−m·sin(theta)−n·sin(θ) +n
+
+        arotate(the_image, out_image,angle,m, n, bilinear,rows, cols)
+        {
+
+            // the following magic number is from180 degrees divided by pi 
+            radian_angle = angle/57.29577951;
+            cosa  = cos(radian_angle);
+            sina  = sin(radian_angle);/
+            
+            for(i=0; i<rows; i++)
+            {
+                for(j=0; j<cols; j++)
+                {
+                    tmpx = (double)(j)*cosa-(double)(i)*sina-(double)(m)*cosa+(double)(m)+(double)(n)*sina;
+                    tmpy = (double)(i)*cosa+(double)(j)*sina-(double)(m)*sina-(double)(n)*cosa+(double)(n);
+                    new_j = tmpx;
+                    new_i = tmpy;
+                    if(bilinear == 0)
+                    {
+                        if(new_j < 0||new_j >= cols ||new_i < 0 ||new_i >= rows)
+                            out_image[i][j] = FILL;
+                            else
+                            out_image[i][j] =the_image[new_i][new_j];
+                    }  
+                    else
+                    {
+                        out_image[i][j] =bilinear_interpolate(the_image,tmpx, tmpy,rows, cols);
+                    }  // ends bilinear if 
+            
+                }  // ends loop over j 
+            
+            }  // ends loop over i 
+        }
 
     */
     ImageFrame::ImageData_t ImageProcessor::RotateAngle(ImageFrame image, int angle)
