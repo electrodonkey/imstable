@@ -32,8 +32,10 @@ int main(int argc, char** argv) {
     newImage.data.resize(oldImage.height, std::vector<int>(oldImage.width, 0));
 
     // perform image transform
-    newImage.data = improcessor.RotateCW90(oldImage);
-
+    //newImage.data = improcessor.RotateCW90(oldImage);
+    //newImage.data = improcessor.RotateAngle(oldImage, 30);
+    //newImage.data = improcessor.FlipHoriz(oldImage);
+    newImage.data = improcessor.FlipVert(oldImage);
     // commit new image
     newImage.Write();
    
