@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
 
-# set the project name
-project(imstable)
-
 set(DOXYGEN_PROJECT_NAME imstable)
 set(DOXYGEN_PROJECT_VERSION ${imstable_VERSION})
 set(DOXYGEN_PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")

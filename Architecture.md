@@ -1,5 +1,5 @@
 # Architecture
 
-- file reader class
-- file type class
-    - image class (pgm)
+- image/frame base class (ImageFrame)
+- file type class (FilePGM)
+- image processor class (ImageProcessor)

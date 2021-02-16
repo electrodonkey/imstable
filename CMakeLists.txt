@@ -6,16 +6,24 @@ project(imstable VERSION 1.0 LANGUAGES CXX)
 # add headers
 include_directories(include)
  
-# add sources:
+# add sources
 file(GLOB SOURCES "source/*.cpp")
  
-# add executable 
-add_executable(imstable ${SOURCES})
+# create shared lib
+add_library (imstable SHARED ${SOURCES})
 
+# create demo executable
+add_executable(imstable_demo "demo/imstable.cpp")
+
+# add tests
 add_subdirectory(test) 
 
+# add documentation
 add_subdirectory(documentation)
 
+# add external dependencies
 add_subdirectory(extern)
 
-target_link_libraries(imstable PRIVATE spdlog::spdlog)
+# link libraries
+target_link_libraries(imstable PUBLIC spdlog::spdlog)
+target_link_libraries(imstable_demo PUBLIC imstable)

@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
-
-# set the project name
-project(imstable)
+cmake_minimum_required(VERSION 3.11)
 
 Include(FetchContent)
 
