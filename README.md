@@ -1,6 +1,6 @@
 # imstable
 
-Image rotation library
+Image rotation/stabilisation library
 
 ![CMake](https://github.com/electrodonkey/imstable/workflows/CMake/badge.svg)
 
@@ -17,21 +17,24 @@ make
 
 ## Open Topics
 
-- reading a PGM (Portable Gray Map)file -> done
-- CW90, CCW90, FlipHoriz, FlipVertical -> done
-- interpolation of pixels (bilinear, cubic)
-- crop to largest rectangle -> future
+- [x] reading a PGM (Portable Gray Map)file
+- [x] CW90, CCW90, FlipHoriz, FlipVertical
+- [] rotation from pivot point
+- [] interpolation of pixels (bilinear, cubic)
+- [] crop to largest rectangle
 
 
-# Supported file types
+## Supported file types
 
 - Currently only [ASCII PGM](http://davis.lbl.gov/Manuals/NETPBM/doc/pgm.html)/[PGM](https://people.sc.fsu.edu/~jburkardt/data/pgmb/pgmb.html)
 
 ## Requirements 
+
 - Doxygen
 - CMake
 - GCC toolchain
 
 ## Assumptions
+
 - All PGM files have only one comment on the 2nd line
 - We open only ASCII (P2) PGM files
