@@ -1,11 +1,26 @@
 # imstable
 
-## Image rotation/stabilisation library
-
 ![CMake](https://github.com/electrodonkey/imstable/workflows/CMake/badge.svg)
 
+## About
+
+Imstable is an image rotation/stabilisation library.
 Image rotation is a common image processing operation, let's give it a try.
-This is mostly an exercise in C++ and Cmake.
+This is mostly an exercise in C++ and Cmake in my attempt to become better at them.
+
+## Demo
+
+```bash
+./imstable_demo.exe -f ../assets/lena.ascii.pgm -o rotate -a 20
+```
+
+Input image:
+
+<img src="documentation/images/input.png" width="200">
+
+Output image:
+
+<img src="documentation/images/output.png" width="200">
 
 ## Getting started
 
@@ -34,8 +49,8 @@ make
 - [x] CW90, CCW90, FlipHoriz, FlipVertical
 - [x] rotation from pivot point
 - [x] bilinear interpolation of pixels
-- [] crop
-- [] crop to largest rectangle
+- [ ] crop
+- [ ] crop to largest rectangle
 
 ## Supported file types
 

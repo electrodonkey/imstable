@@ -59,7 +59,7 @@ namespace imstable
     /*
         Bilinear Interpolation:
         Bi-linear interpolation finds values between pixels in two directions
-
+        Inspired by "Image Processing in C”, Dwayne Phillips
         gray(P1) = (1−x)·gray(floor(x),floor(y)) +x·gray(ceiling(x),floor(y))
         gray(P2) = (1−x)·gray(floor(x),ceiling(y))+x·gray(ceiling(x),ceiling(y))
         gray(P3) = (1−y)·gray(P1) +y·gray(P2)
@@ -90,6 +90,7 @@ namespace imstable
     *   x = width, y = heigth, m,n - coordinates of pivot point
     *   X=x·cos(θ)−y·sin(θ)−m·cos(theta) +n·sin(θ) +m
     *   Y=y·cos(θ) +x·sin(θ)−m·sin(theta)−n·sin(θ) +n
+    *   Inspired by "Image Processing in C”, Dwayne Phillips
     * @param image Input image
     * @param degree_angle Angle in degrees -> + means CW rotation, - means CCW
     * @param pivot_x X coordinate of pivot point

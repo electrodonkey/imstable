@@ -75,7 +75,6 @@ int main(int argc, char * argv[])
                     newImage.Write();
                 }
             }
-
         }
     }
     return 0;
