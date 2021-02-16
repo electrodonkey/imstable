@@ -2,7 +2,9 @@
 
 Image rotation library
 
-Omage rotation is a common image processing operation.
+![CMake](https://github.com/electrodonkey/imstable/workflows/CMake/badge.svg)
+
+Image rotation is a common image processing operation.
 It can be solved with the image rotation matrix (https://en.wikipedia.org/wiki/Rotation_matrix)
 
 ## Open Topics
