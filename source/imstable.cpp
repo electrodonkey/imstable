@@ -5,43 +5,37 @@
 #include "ImageProcessor.h"
 
 int main(int argc, char** argv) {
+    
     spdlog::info("Welcome to imstable!");
+    
     if(argc < 2)
     {
         spdlog::error("No input parameters!");
+        //print_help();
         return -1;
     }
-    std::string path = argv[1];
-    std::string path_out = "test.pgm";
-    std::string line;
-    std::stringstream ss;
-    std::ifstream myfile (path);
-    std::ofstream outfile (path_out);
 
-    imstable::FilePGM newImage(path);
+    std::string input_image_path = argv[1];
+    std::string output_image_path = "test.pgm";
+
+    imstable::FilePGM oldImage(input_image_path);
+    imstable::FilePGM newImage(output_image_path);
     imstable::ImageProcessor improcessor;
-        // rotation
-    std::vector<std::vector<int>> output_image;
-    output_image.resize(newImage.height, std::vector<int>(newImage.width, 0));
-    //output_image = rotate_CW_90(newImage.data,newImage.cols,newImage.rows);
-    output_image = improcessor.RotateCW90(newImage);
-    outfile << newImage.header_info.str();
-    for(int row = 0; row < newImage.height; ++row)
-    {
-        for (int col = 0; col < newImage.width; ++col)
-        {
-            outfile << output_image[row][col];
-            outfile << " ";
-        } 
-        outfile << "\n";   
-    }
-    outfile.close();
-       // myfile.close();
-    // }
-    // else
-    // {
-    //     spdlog::error("Unable to open file");
-    //     throw;
-    // }
+    
+    // load an existing image
+    oldImage.Load();
+
+    // prepare a new image shell to receive the transformed image
+    newImage.height = oldImage.height;
+    newImage.width = oldImage.width;
+    newImage.header_info << oldImage.header_info.str();
+    newImage.data.resize(oldImage.height, std::vector<int>(oldImage.width, 0));
+
+    // perform image transform
+    newImage.data = improcessor.RotateCW90(oldImage);
+
+    // commit new image
+    newImage.Write();
+   
     return 0;
 } 

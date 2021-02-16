@@ -11,10 +11,13 @@ namespace imstable{
         public:
         FilePGM(std::string fileName); // create array based on file with this name
         ~FilePGM(void);
+        
         std::string filePath;
-        int Load(std::string fileName);
-        int Close();
         std::stringstream header_info;
+        
+        int Load();
+        int Close();
+        int Write();
         //int height;
         //int width;
         //std::vector<std::vector<int>> data;

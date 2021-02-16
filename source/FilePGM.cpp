@@ -7,7 +7,7 @@ namespace imstable{
     FilePGM::FilePGM(std::string path)
     {
         this->filePath = path;
-        FilePGM::Load(this->filePath);
+        //FilePGM::Load(this->filePath);
         this->isOpen = true;
     }
 
@@ -16,16 +16,16 @@ namespace imstable{
         FilePGM::Close();
 	}
 
-    int FilePGM::Load(std::string filePath)
+    int FilePGM::Load()
     {
         std::string line;
         std::stringstream ss;
         int MaxVal = 0;
 
-        this->myfile.open(filePath);
+        this->myfile.open(this->filePath);
         if (this->myfile.is_open())
         {
-            spdlog::info(filePath);
+            spdlog::info(this->filePath);
             // First line, check file format
             std::getline(myfile,line);
             if(line.compare("P2") != 0)
@@ -68,6 +68,7 @@ namespace imstable{
                     ss >> this->data[row][col];
                 }    
             }
+            this->myfile.close();
             return 0;
         }
         else
@@ -76,6 +77,24 @@ namespace imstable{
             throw;
         }
     }
+    
+    int FilePGM::Write()
+    {
+        std::ofstream outfile (this->filePath);
+        outfile << this->header_info.str();
+        for(int row = 0; row < this->height; ++row)
+        {
+            for (int col = 0; col < this->width; ++col)
+            {
+                outfile << this->data[row][col];
+                outfile << " ";
+            } 
+            outfile << "\n";   
+        }
+        outfile.close();
+        return 0;
+    }
+
     int FilePGM::Close()
     {
         if(this->isOpen)
