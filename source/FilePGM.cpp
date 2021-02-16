@@ -7,7 +7,6 @@ namespace imstable{
     FilePGM::FilePGM(std::string path)
     {
         this->filePath = path;
-        //FilePGM::Load(this->filePath);
         this->isOpen = true;
     }
 
@@ -18,57 +17,33 @@ namespace imstable{
 
     int FilePGM::Load()
     {
-        std::string line;
-        std::stringstream ss;
-        int MaxVal = 0;
-
+        this->MaxVal = 0;
         this->myfile.open(this->filePath);
         if (this->myfile.is_open())
         {
             spdlog::info(this->filePath);
-            // First line, check file format
-            std::getline(myfile,line);
-            if(line.compare("P2") != 0)
-            {
-                spdlog::error("Unexpected file type!");
-                throw;
-            }
-            else
-            { 
-                this->header_info << line << "\n";
-                spdlog::info("File version:" + line);
-            }  
             
+            // First line, check file format
+            FilePGM::GetFileFormat();
+
             // Second line : comment -> We assume that all files have a comment here
-            std::getline(myfile,line);
-            if(line.find('#') != std::string::npos)
-            {
-                spdlog::info("Comment: " + line);
-            }
-            this->header_info << line << "\n";
+            FilePGM::GetFileComment();
             
             // Read height/width information
-            ss << myfile.rdbuf();
-            ss >> this->width >> this->height;
-            this->header_info << this->width << " " << this->height << "\n";
-            spdlog::info("Columns: " + std::to_string(this->width) + " Rows: " + std::to_string(this->height));
+            FilePGM::GetFileDimensions();
             
             // Read MaxVal
-            ss >> MaxVal;
-            this->header_info << MaxVal << "\n";
-            spdlog::info("Maxval: " + std::to_string(MaxVal));
+            FilePGM::GetMaxValue();
 
             // Resize container to image dimensions
             this->data.resize(this->height, std::vector<int>(this->width, 0));
             
-            for(int row = 0; row < this->height; ++row)
-            {
-                for (int col = 0; col < this->width; ++col)
-                {
-                    ss >> this->data[row][col];
-                }    
-            }
+            // Get image data
+            FilePGM::GetImageData();
+
+            // Close file
             this->myfile.close();
+            
             return 0;
         }
         else
@@ -81,7 +56,11 @@ namespace imstable{
     int FilePGM::Write()
     {
         std::ofstream outfile (this->filePath);
+
+        // Write header
         outfile << this->header_info.str();
+
+        // Write data
         for(int row = 0; row < this->height; ++row)
         {
             for (int col = 0; col < this->width; ++col)
@@ -103,9 +82,70 @@ namespace imstable{
             this->isOpen = false;
             return 0;
         }
-        else
+        return 1;
+    }
+
+    void FilePGM::GetFileFormat()
+    {
+        std::string line;
+        std::getline(myfile,line);
+        if(line.compare("P2") != 0)
         {
-            return 1;
+            spdlog::error("Unexpected file type!");
+            throw;
         }
+        else
+        { 
+            this->header_info << line << "\n";
+            spdlog::info("File version:" + line);
+        }  
+    }
+
+    void FilePGM::GetFileComment()
+    {
+        std::string line;
+        std::getline(myfile,line);
+        if(line.find('#') != std::string::npos)
+        {
+            spdlog::info("Comment: " + line);
+        }
+        this->header_info << line << "\n";
+    }
+
+    void FilePGM::GetFileDimensions()
+    {
+        this->ss << myfile.rdbuf();
+        this->ss >> this->width >> this->height;
+        this->header_info << this->width << " " << this->height << "\n";
+        spdlog::info("Columns: " + std::to_string(this->width) + " Rows: " + std::to_string(this->height));
+    }
+
+    void FilePGM::GetMaxValue()
+    {
+        this->ss >> this->MaxVal;
+        this->header_info << this->MaxVal << "\n";
+        spdlog::info("Maxval: " + std::to_string(this->MaxVal));
+    }
+
+    void FilePGM::GetImageData()
+    {
+        for(int row = 0; row < this->height; ++row)
+        {
+            for (int col = 0; col < this->width; ++col)
+            {
+                ss >> this->data[row][col];
+            }    
+        }
+    }
+    
+    void FilePGM::UpdateHeader()
+    {   
+        std::stringstream header;
+        header << "P2" << "\n";
+        header << "# image updated" << "\n";
+        header << this->width << " " << this->height << "\n";
+        this->MaxVal = 254;
+        header << this->MaxVal << "\n";
+        this->header_info << header.str();
     }
 }

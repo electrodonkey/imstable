@@ -18,12 +18,17 @@ namespace imstable{
         int Load();
         int Close();
         int Write();
-        //int height;
-        //int width;
-        //std::vector<std::vector<int>> data;
+        void UpdateHeader();
         
         private:
+        std::stringstream ss;
         std::ifstream myfile;
+        int MaxVal;
+        void GetFileFormat();
+        void GetFileComment();
+        void GetFileDimensions();
+        void GetMaxValue();
+        void GetImageData();
         bool isOpen = false;
     };
 } // namespace imstable

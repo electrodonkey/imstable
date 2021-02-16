@@ -11,7 +11,7 @@ This is mostly an exercise in C++ and Cmake in my attempt to become better at th
 ## Demo
 
 ```bash
-./imstable_demo.exe -f ../assets/lena.ascii.pgm -o rotate -a 20
+./imstable_demo.exe -f ../assets/lena.ascii.pgm -o rotate -a +20 -cx 200 -cy 200 -ch 200 -cw 200
 ```
 
 Input image:
@@ -49,7 +49,7 @@ make
 - [x] CW90, CCW90, FlipHoriz, FlipVertical
 - [x] rotation from pivot point
 - [x] bilinear interpolation of pixels
-- [ ] crop
+- [x] crop
 - [ ] crop to largest rectangle
 
 ## Supported file types
@@ -61,7 +61,7 @@ make
 
 - Doxygen
 - CMake > 3.11
-- GCC toolchain
+- GCC toolchain (8.1.0 used)
 
 ## Assumptions
 

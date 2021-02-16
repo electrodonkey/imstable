@@ -10,7 +10,7 @@ include_directories(include)
 file(GLOB SOURCES "source/*.cpp")
  
 # create shared lib
-add_library (imstable SHARED ${SOURCES})
+add_library (imstable ${SOURCES})
 
 # create demo executable
 add_executable(imstable_demo "demo/imstable.cpp")
