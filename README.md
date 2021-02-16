@@ -26,7 +26,8 @@ make
 
 ## Supported file types
 
-- Currently only [ASCII PGM](http://davis.lbl.gov/Manuals/NETPBM/doc/pgm.html)/[PGM](https://people.sc.fsu.edu/~jburkardt/data/pgmb/pgmb.html)
+- Currently only [ASCII PGM](http://davis.lbl.gov/Manuals/NETPBM/doc/pgm.html)/[PGMA](https://people.sc.fsu.edu/~jburkardt/data/pgma/pgma.html)
+- Will be extended to other file types
 
 ## Requirements 
 

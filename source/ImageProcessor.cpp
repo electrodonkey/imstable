@@ -7,7 +7,7 @@ namespace imstable
 
     ImageProcessor::~ImageProcessor() = default;
 
-    ImageFrame::ImageData_t ImageProcessor::RotateCW90(ImageFrame image)
+    ImageFrame::ImageData_t ImageProcessor::RotateCW90(ImageFrame& image)
     {
         ImageFrame::ImageData_t output_image_data;
         output_image_data.resize(image.height, std::vector<int>(image.width, 0));
@@ -27,7 +27,7 @@ namespace imstable
         return 0;
     }
 
-    ImageFrame::ImageData_t ImageProcessor::FlipHoriz(ImageFrame image)
+    ImageFrame::ImageData_t ImageProcessor::FlipHoriz(ImageFrame& image)
     {
         ImageFrame::ImageData_t output_image_data;
         output_image_data.resize(image.height, std::vector<int>(image.width, 0));
@@ -42,7 +42,7 @@ namespace imstable
         return output_image_data;
     }
 
-    ImageFrame::ImageData_t ImageProcessor::FlipVert(ImageFrame image)
+    ImageFrame::ImageData_t ImageProcessor::FlipVert(ImageFrame& image)
     {
         ImageFrame::ImageData_t output_image_data;
         output_image_data.resize(image.height, std::vector<int>(image.width, 0));
@@ -63,99 +63,75 @@ namespace imstable
         gray(P1) = (1−x)·gray(floor(x),floor(y)) +x·gray(ceiling(x),floor(y))
         gray(P2) = (1−x)·gray(floor(x),ceiling(y))+x·gray(ceiling(x),ceiling(y))
         gray(P3) = (1−y)·gray(P1) +y·gray(P2)
-
-        int bilinear_interpolate(the_image, x, y, rows, cols)
-        {
-            if(x < 0.0 || x >= (double)(cols-1) || y < 0.0 || y >= (double)(rows-1)) return(0);
-            mp_double = floor(x);
-            floor_x = tmp_double;
-            tmp_double = floor(y);
-            floor_y = tmp_double;
-            tmp_double = ceil(x);
-            ceil_x = tmp_double;
-            tmp_double = ceil(y);
-            ceil_y = tmp_double;
-            fraction_x = x - floor(x);
-            fraction_y = y - floor(y);
-            one_minus_x = 1.0 - fraction_x;
-            one_minus_y = 1.0 - fraction_y;
-            tmp_double = one_minus_x *(double)(the_image[floor_y][floor_x]) +fraction_x *(double)(the_image[floor_y][ceil_x]);
-            p1 = tmp_double;tmp_double = one_minus_x *(double)(the_image[ceil_y][floor_x]) +fraction_x *(double)(the_image[ceil_y][ceil_x]);
-            p2 = tmp_double;tmp_double = one_minus_y * (double)(p1) +fraction_y * (double)(p2);
-            p3 = tmp_double;
-            return(p3);
-        }
     */
-
-    /*
-        x = width, y = heigth, m,n - coordinates of pivot point
-        X=x·cos(θ)−y·sin(θ)−m·cos(theta) +n·sin(θ) +m
-        Y=y·cos(θ) +x·sin(θ)−m·sin(theta)−n·sin(θ) +n
-
-        arotate(the_image, out_image,angle,m, n, bilinear,rows, cols)
+    int ImageProcessor::InterpolateBiliniar(ImageFrame& image, double x, double y)
+    {
+        if(x < 0.0 || x >= (float)(image.width-1) || y < 0.0 || y >= (float)(image.height-1)) 
         {
-
-            // the following magic number is from180 degrees divided by pi 
-            radian_angle = angle/57.29577951;
-            cosa  = cos(radian_angle);
-            sina  = sin(radian_angle);/
-            
-            for(i=0; i<rows; i++)
-            {
-                for(j=0; j<cols; j++)
-                {
-                    tmpx = (double)(j)*cosa-(double)(i)*sina-(double)(m)*cosa+(double)(m)+(double)(n)*sina;
-                    tmpy = (double)(i)*cosa+(double)(j)*sina-(double)(m)*sina-(double)(n)*cosa+(double)(n);
-                    new_j = tmpx;
-                    new_i = tmpy;
-                    if(bilinear == 0)
-                    {
-                        if(new_j < 0||new_j >= cols ||new_i < 0 ||new_i >= rows)
-                            out_image[i][j] = FILL;
-                            else
-                            out_image[i][j] =the_image[new_i][new_j];
-                    }  
-                    else
-                    {
-                        out_image[i][j] =bilinear_interpolate(the_image,tmpx, tmpy,rows, cols);
-                    }  // ends bilinear if 
-            
-                }  // ends loop over j 
-            
-            }  // ends loop over i 
+            return 0;
         }
+        int floor_x = floor(x);
+        int floor_y = floor(y);
+        int ceil_x = ceil(x);
+        int ceil_y = ceil(y);
+        float fraction_x = x - floor_x;
+        float fraction_y = y - floor_y;
+        float one_minus_x = 1.0 - fraction_x;
+        float one_minus_y = 1.0 - fraction_y;
+        float p1 = one_minus_x * (float)(image.data[floor_y][floor_x]) + fraction_x * (float)(image.data[floor_y][ceil_x]);
+        float p2 = one_minus_x * (float)(image.data[ceil_y][floor_x]) + fraction_x * (float)(image.data[ceil_y][ceil_x]);
+        float p3 = one_minus_y * (float)(p1) +fraction_y * (float)(p2);
+        return p3;
+    }
 
+   /**
+    * @brief 
+    *   Rotate an image with a given angle and a given pivot point
+    *   x = width, y = heigth, m,n - coordinates of pivot point
+    *   X=x·cos(θ)−y·sin(θ)−m·cos(theta) +n·sin(θ) +m
+    *   Y=y·cos(θ) +x·sin(θ)−m·sin(theta)−n·sin(θ) +n
+    * @param image Input image
+    * @param degree_angle Angle in degrees -> + means CW rotation, - means CCW
+    * @param pivot_x X coordinate of pivot point
+    * @param pivot_y Y coordinate of pivot point
+    * @param bilinear Use interpolation: False = no interpolation, True = use bilinear interpolation
+    * @return ImageFrame::ImageData_t 
     */
-    ImageFrame::ImageData_t ImageProcessor::RotateAngle(ImageFrame image, int angle)
+    ImageFrame::ImageData_t ImageProcessor::RotateAngle(ImageFrame& image, double degree_angle, int pivot_x, int pivot_y, bool bilinear)
     {
         ImageFrame::ImageData_t output_image_data;
         output_image_data.resize(image.height, std::vector<int>(image.width, 0));
-        int hwidth = image.width / 2;
-		int hheight = image.height / 2;
-        double sinma = sin(-angle);
-		double cosma = cos(-angle);
-        for (int x = 0; x < image.width; x++) 
+        
+        // the following magic number is from180 degrees divided by pi 
+        double radian_angle = degree_angle/57.29577951;
+        
+        double cosa  = cos(radian_angle);
+        double sina  = sin(radian_angle);
+        
+        for(int i=0; i<image.height; i++)
         {
-            for (int y = 0; y < image.height; y++) 
+            for(int j=0; j<image.width; j++)
             {
-                int xt = x - hwidth;
-		        int yt = y - hheight;
-		
-		        int xs = (int)round((cosma * xt - sinma * yt) + hwidth);
-		        int ys = (int)round((sinma * xt + cosma * yt) + hheight);
+                double new_j = (double)(j)*cosa-(double)(i)*sina-(double)(pivot_x)*cosa+(double)(pivot_x)+(double)(pivot_y)*sina;
+                double new_i = (double)(i)*cosa+(double)(j)*sina-(double)(pivot_x)*sina-(double)(pivot_y)*cosa+(double)(pivot_y);
 
-		        if(xs >= 0 && xs < image.width && ys >= 0 && ys < image.height) 
+                if(bilinear == 0)
                 {
-			        /* set target pixel (x,y) to color at (xs,ys) */
-                    output_image_data[x,y]=image.data[xs,ys];
-		        } 
-                else 
+                    if(new_j < 0 || new_j >= image.width ||new_i < 0 ||new_i >= image.height)
+                    {
+                        output_image_data[i][j] = 0;
+                    }
+                    else
+                    {
+                        output_image_data[i][j] = image.data[new_i][new_j];
+                    }
+                }  
+                else
                 {
-			        /* set target pixel (x,y) to some default background */
-                    output_image_data[x,y].push_back(0);
-		        }
+                    output_image_data[i][j] = ImageProcessor::InterpolateBiliniar(image, new_j, new_i);
+                }
             }
-        }
+        }  
         return output_image_data;
     }
 } // end namespace

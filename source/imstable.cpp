@@ -35,7 +35,8 @@ int main(int argc, char** argv) {
     //newImage.data = improcessor.RotateCW90(oldImage);
     //newImage.data = improcessor.RotateAngle(oldImage, 30);
     //newImage.data = improcessor.FlipHoriz(oldImage);
-    newImage.data = improcessor.FlipVert(oldImage);
+    //newImage.data = improcessor.FlipVert(oldImage);
+    newImage.data = improcessor.RotateAngle(oldImage, 20.0, oldImage.height/2, oldImage.width/2, true);
     // commit new image
     newImage.Write();
    
