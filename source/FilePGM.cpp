@@ -25,7 +25,8 @@ namespace imstable{
         this->myfile.open(filePath);
         if (this->myfile.is_open())
         {
-            // First line: format
+            spdlog::info(filePath);
+            // First line, check file format
             std::getline(myfile,line);
             if(line.compare("P2") != 0)
             {
@@ -34,6 +35,7 @@ namespace imstable{
             }
             else
             { 
+                this->header_info << line << "\n";
                 spdlog::info("File version:" + line);
             }  
             
@@ -43,12 +45,22 @@ namespace imstable{
             {
                 spdlog::info("Comment: " + line);
             }
+            this->header_info << line << "\n";
+            
+            // Read height/width information
             ss << myfile.rdbuf();
             ss >> this->width >> this->height;
+            this->header_info << this->width << " " << this->height << "\n";
             spdlog::info("Columns: " + std::to_string(this->width) + " Rows: " + std::to_string(this->height));
-            this->data.resize(this->height, std::vector<int>(this->width, 0));
+            
+            // Read MaxVal
             ss >> MaxVal;
+            this->header_info << MaxVal << "\n";
             spdlog::info("Maxval: " + std::to_string(MaxVal));
+
+            // Resize container to image dimensions
+            this->data.resize(this->height, std::vector<int>(this->width, 0));
+            
             for(int row = 0; row < this->height; ++row)
             {
                 for (int col = 0; col < this->width; ++col)

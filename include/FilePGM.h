@@ -1,6 +1,6 @@
 #ifndef FilePGM_H
 #define FilePGM_H
-
+#include <sstream>
 #include <fstream>
 #include <vector>
 #include "ImageFrame.h"
@@ -14,6 +14,7 @@ namespace imstable{
         std::string filePath;
         int Load(std::string fileName);
         int Close();
+        std::stringstream header_info;
         //int height;
         //int width;
         //std::vector<std::vector<int>> data;

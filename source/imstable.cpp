@@ -17,22 +17,23 @@ int main(int argc, char** argv) {
     std::stringstream ss;
     std::ifstream myfile (path);
     std::ofstream outfile (path_out);
-    int numcols = 0 , numrows = 0, row = 0, col = 0, maxval = 0;
 
     imstable::FilePGM newImage(path);
     imstable::ImageProcessor improcessor;
         // rotation
     std::vector<std::vector<int>> output_image;
-    output_image.resize(numrows, std::vector<int>(newImage.width, 0));
+    output_image.resize(newImage.height, std::vector<int>(newImage.width, 0));
     //output_image = rotate_CW_90(newImage.data,newImage.cols,newImage.rows);
     output_image = improcessor.RotateCW90(newImage);
-    for(row = 0; row < newImage.height; ++row)
+    outfile << newImage.header_info.str();
+    for(int row = 0; row < newImage.height; ++row)
     {
-        for (col = 0; col < newImage.width; ++col)
+        for (int col = 0; col < newImage.width; ++col)
         {
             outfile << output_image[row][col];
             outfile << " ";
-        }    
+        } 
+        outfile << "\n";   
     }
     outfile.close();
        // myfile.close();

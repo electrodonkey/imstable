@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 
 # set the project name
 project(imstable VERSION 1.0 LANGUAGES CXX)
