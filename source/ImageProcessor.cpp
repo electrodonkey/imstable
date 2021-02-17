@@ -130,7 +130,7 @@ namespace imstable
     *   X=x·cos(θ)−y·sin(θ)−m·cos(theta) +n·sin(θ) +m
     *   Y=y·cos(θ) +x·sin(θ)−m·sin(theta)−n·sin(θ) +n
     *   Inspired by "Image Processing in C”, Dwayne Phillips
-    * @param image Input image
+    * @param image Input image reference
     * @param degree_angle Angle in degrees -> negative angle means CW rotation, positive angle means CCW
     * @param pivot_x X coordinate of pivot point
     * @param pivot_y Y coordinate of pivot point
@@ -175,6 +175,16 @@ namespace imstable
         return output_image_data;
     }
 
+    /**
+     * @brief Crop an image given a starting point and an area
+     * 
+     * @param image Input image reference
+     * @param crop_start_x X coordinate of crop start point
+     * @param crop_start_y Y coordinate of crop start point
+     * @param crop_height crop rectangle height
+     * @param crop_width crop rectangle width
+     * @return ImageFrame::ImageData_t 
+     */
     ImageFrame::ImageData_t ImageProcessor::CropImage(ImageFrame& image, int crop_start_x, int crop_start_y, int crop_height, int crop_width)
     {
         ImageFrame::ImageData_t output_image_data;

@@ -10,6 +10,9 @@ This is mostly an exercise in C++ and Cmake in my attempt to become better at th
 
 ## Demo
 
+Given an input PGMA image, a rotation angle, and coordinates for the crop rectangle, using imstable you can get the following output:
+
+Command: 
 ```bash
 ./imstable_demo.exe -f ../assets/lena.ascii.pgm -o rotate -a +20 -cx 200 -cy 200 -ch 200 -cw 200
 ```
