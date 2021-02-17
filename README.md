@@ -60,6 +60,11 @@ make
 - Currently only [ASCII PGM](http://davis.lbl.gov/Manuals/NETPBM/doc/pgm.html)/[PGMA](https://people.sc.fsu.edu/~jburkardt/data/pgma/pgma.html)
 - Will be extended to other file types
 
+## Viewing PGMA images
+
+- Irfanview on Windows
+- Imagemagick on Linux and Windows
+
 ## System requirements  
 
 - CMake >= 3.19
