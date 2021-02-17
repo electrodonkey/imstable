@@ -62,9 +62,9 @@ make
 
 ## System requirements  
 
-- Doxygen
-- CMake > 3.11
+- CMake >= 3.19
 - GCC toolchain (8.1.0 used)
+- Doxygen (to generate documentation)
 
 ## Assumptions
 
